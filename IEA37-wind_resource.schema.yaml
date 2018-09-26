@@ -105,8 +105,8 @@ properties:
       #~~
       wind_speed:
         anyOf:
-          - $comment: Constant wind speed
-            $ref: "#/definitions/variables/wind_speed"
+          - $ref: "#/definitions/variables/wind_speed"
+              # Constant wind speed
           - type: array
             items:
               $ref: "#/definitions/variables/wind_speed"
@@ -114,8 +114,8 @@ properties:
       #~~
       wind_direction:
         anyOf:
-          - $comment: Constant wind direction
-            $ref: "#/definitions/variables/wind_direction"
+          - $ref: "#/definitions/variables/wind_direction"
+              # Constant wind direction
           - type: array
             items:
               $ref: "#/definitions/variables/wind_direction"
@@ -123,8 +123,8 @@ properties:
       #~~
       air_density:
         anyOf:
-          - $comment: Constant air density
-            $ref: "#/definitions/variables/air_density"
+          - $ref: "#/definitions/variables/air_density"
+              # Constant air density
           - type: array
             items:
               $ref: "#/definitions/variables/air_density"
@@ -132,8 +132,8 @@ properties:
       #~~
       turbulence_intensity:
         anyOf:
-          - $comment: Constant turbulence intensity
-            $ref: "#/definitions/variables/turbulence_intensity"
+          - $ref: "#/definitions/variables/turbulence_intensity"
+              # Constant turbulence intensity
           - type: array
             items:
               $ref: "#/definitions/variables/turbulence_intensity"
@@ -141,8 +141,8 @@ properties:
       #~~
       atmospheric_stability:
         anyOf:
-          - $comment: Constant atmospheric stability
-            $ref: "#/definitions/variables/atmospheric_stability"
+          - $ref: "#/definitions/variables/atmospheric_stability"
+              # Constant atmospheric stability
           - type: array
             items:
               $ref: "#/definitions/variables/atmospheric_stability"
@@ -155,8 +155,8 @@ properties:
     description: >-
       The probability mass function as an array of probability mass-pairs
     oneOf:
-      - $comment: Case; all variables should be constant.
-        const: null
+      - const: null
+          # Case; all variables should be constant.
       - type: array
         items:
           $ref: "#/definitions/probability"
