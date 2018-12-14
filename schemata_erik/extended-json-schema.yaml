@@ -4,10 +4,10 @@
 # (cf. https://json-schema.org/latest/json-schema-core.html#rfc.section.6.4)
 
 # HEADER
-$schema: "https://bitbucket.org/equaeghe/pseudo_gradients-code/\
-                                src/master/schemata/extended-json-schema.yaml#"
-$id: "https://bitbucket.org/equaeghe/pseudo_gradients-code/\
-                                src/master/schemata/extended-json-schema.yaml#"
+$schema: "https://github.com/equaeghe/ontology/blob/schema-experiments/\
+                                      schemata_erik/extended-json-schema.yaml#"
+$id: "https://github.com/equaeghe/ontology/blob/schema-experiments/\
+                                      schemata_erik/extended-json-schema.yaml#"
   # TODO: Does the hash sign need to be included there?
 title: Extended JSON-schema meta-schema
 description: >-

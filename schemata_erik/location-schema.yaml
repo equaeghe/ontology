@@ -2,10 +2,10 @@
 # Date: 2018-12-13
 
 # HEADER
-$schema: "https://bitbucket.org/equaeghe/pseudo_gradients-code/\
-                                src/master/schemata/extended-json-schema.yaml#"
-$id: "https://bitbucket.org/equaeghe/pseudo_gradients-code/\
-                                     src/master/schemata/location-schema.yaml#"
+$schema: "https://github.com/equaeghe/ontology/blob/schema-experiments/\
+                                      schemata_erik/extended-json-schema.yaml#"
+$id: "https://github.com/equaeghe/ontology/blob/schema-experiments/\
+                                           schemata_erik/location-schema.yaml#"
   # TODO: the $id uri must point to a git tag, ideally
 title: Geographical coordinates
 description: Coordinates for a location on Earth
