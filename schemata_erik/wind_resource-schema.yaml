@@ -1,0 +1,191 @@
+# Author: Erik Quaeghebeur
+# Date: 2018-12-10
+
+# HEADER
+$schema: "https://bitbucket.org/equaeghe/pseudo_gradients-code/\
+                                src/master/schemata/extended-json-schema.yaml#"
+$id: "https://bitbucket.org/equaeghe/pseudo_gradients-code/\
+                                src/master/schemata/wind_resource-schema.yaml#"
+  # TODO: the $id uri must point to a git tag, ideally
+title: Wind resource description
+description: >-
+  A description of a location’s wind resource as a probability mass
+  function—using relative weights—, possibly using Weibull distributions for
+  the wind speed, or as a case.
+type: object
+required:
+  - uuid
+  - averaging_interval_length
+  - reference_height
+  - probability
+  - oneOf:
+      - wind_speed
+      - weibull_parameters
+additionalProperties: false
+
+# PROPERTIES
+properties:
+  #~
+  uuid:
+    title: Universally unique identifier (UUID)
+    description: >-
+      The UUID should follow RFC 4122.
+      It is meant to distinguish different turbine descriptions.
+      This is especially relevant for different versions and variants of the
+      same turbine.
+    type: string
+    pattern: ^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$
+  #~
+  name:
+    description: The name of the wind resource
+    type: string
+  #~
+  particulars:
+    description: >-
+      A list of relevant pieces of information, such as further wind resource
+      description and details about the how the values were obtained.
+    type: array
+    uniqueItems: true
+    minItems: 1
+    items:
+      type: str
+  #~
+  location:
+    title: Wind resource location
+    $ref: "location-schema.yaml"
+  #~
+  period:
+    description: >-
+      Time intervals of the measurements the probability mass function is
+      derived from
+    type: array
+    items:
+      description: A measurement time interval
+      type: array
+      items:
+        - title: Time interval start date-time
+          type: string
+          format: date-time
+        - description: Time interval end date-time
+          type: string
+          format: date-time
+      uniqueItems: true
+    minItems: 1
+    uniqueItems: true
+  #~
+  averaging_interval_length:
+    title: Averaging interval length
+    description: >-
+      The length in s of the interval over which the resource variables have
+      been averaged
+    type: number
+    unit: s
+    exclusiveMinimum: 0
+  #~
+  reference_height:
+    # TODO: make it clear what a height of 0 m corresponds to
+    title: Reference height
+    description: >-
+      The common height all the physical measurements have been transformed to
+    type: number
+    unit: m
+  #
+  # NOTE: Below come the arrays with data, each either a constant, or an array
+  # of values of length equal over all variables
+  #
+  # TODO: A more tabular representation of the probability mass function
+  # (e.g., as an array of value-tuple/probability pairs) would be more
+  # natural, but seems impossible to nicely specify as a (sufficiently
+  # validatable) JSON schema, although it can be easily represented using
+  # JSON/YAML.
+  #
+  # TODO:
+  # 1. Any way to not have to repeat the variable names here, but instead
+  #    loop over a provided list somehow?
+  # 2. Array length should be the same over all variables.
+  #~
+  air_density:
+    anyOf:
+      - $ref: "variables-schema.yaml#/definitions/variables/air_density"
+          # Constant air density
+      - type: array
+        items:
+          $ref: "variables-schema.yaml#/definitions/variables/air_density"
+        minItems: 2
+  #~
+  atmospheric_stability:
+    anyOf:
+      - $ref: "variables-schema.yaml#/definitions/variables/\
+                                                         atmospheric_stability"
+          # Constant atmospheric stability
+      - type: array
+        items:
+          $ref: "variables-schema.yaml#/definitions/variables/\
+                                                         atmospheric_stability"
+          minItems: 2
+  #~
+  turbulence_intensity:
+    anyOf:
+      - $ref: "variables-schema.yaml#/definitions/variables/\
+                                                          turbulence_intensity"
+          # Constant turbulence intensity
+      - type: array
+        items:
+          $ref: "variables-schema.yaml#/definitions/variables/\
+                                                          turbulence_intensity"
+        minItems: 2
+  #~
+  wind_direction:
+    anyOf:
+      - $ref: "variables-schema.yaml#/definitions/variables/wind_direction"
+          # Constant wind direction
+      - type: array
+        items:
+          $ref: "variables-schema.yaml#/definitions/variables/wind_direction"
+        minItems: 2
+  #~
+  wind_speed:
+    anyOf:
+      - $ref: "variables-schema.yaml#/definitions/wind_speed"
+          # Constant wind speed
+      - type: array
+        items:
+          $ref: "variables-schema.yaml#/definitions/variables/wind_speed"
+        minItems: 2
+  #~
+  weibull_parameters:
+    oneOf:
+      - title: Weibull parameters
+        $id: "#weibull_parameter_definition"
+        type: array
+        items:
+          - title: Scale parameter
+            type: number
+            unit: m
+            exclusiveMinimum: 0
+          - title: Shape parameter
+            type: number
+            unit: 1
+            exclusiveMinimum: 0
+          # Constant wind speed distribution
+      - type: array
+        items:
+          $ref: "#weibull_parameter_definition"
+        minItems: 2
+  #~
+  probability:
+    # TODO: Array length should be the same as for variables.
+    description: >-
+      The probability mass function as an array of relative weights. When used,
+      these values should be scaled by their sum to get probability values!
+      This way, round-off errors in these values are not important and a
+      realistic number of significant digits can be used.
+    oneOf:
+      - const: null
+          # Case; all variables should be constant.
+      - type: array
+        items:
+          - title: Relative weight
+            type: number
+            minimum: 0
+        minItems: 2
