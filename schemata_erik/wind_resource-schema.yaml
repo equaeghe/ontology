@@ -52,7 +52,7 @@ properties:
   #~
   location:
     title: Wind resource location
-    $ref: "location-schema.yaml"
+    $ref: "location-schema.yaml#"
   #~
   period:
     description: >-
